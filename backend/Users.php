@@ -69,6 +69,18 @@ class User{
     return false;
     }
     // delete user function ends
+
+    // fetch form details based on id
+    public function fetchFormDetailsBasedOnId($id) {
+    $query = "SELECT * FROM " . $this->table . " WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
+
 }
 
 ?>

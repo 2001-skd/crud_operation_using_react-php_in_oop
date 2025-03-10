@@ -36,7 +36,15 @@ switch($request_method){
 
     // get method starts
     case "GET":
-        $users = $user->readUser();
+
+        if(isset($_GET['id'])){
+            $id = $_GET['id'];
+            $users = $user->fetchFormDetailsBasedOnId($id);
+        }
+        else{
+            $users = $user->readUser();
+        }
+
         echo json_encode($users);
         break;
     // get method ends
@@ -81,6 +89,9 @@ switch($request_method){
         }
         break;
     // delete method ends
+
+
+    
 
 
         
