@@ -28,6 +28,14 @@ class User{
         return false;
     }
     // create user function ends
+
+    // read user function starts
+    public function readUser(){
+        $query = "SELECT * FROM ".$this->table;
+        $stmt = $this->conn->prepare($query);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    // read user function ends
 }
 
 ?>
