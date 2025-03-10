@@ -8,7 +8,7 @@ class User{
     public $email;
     public $mobile;
 
-    public function __constructor($db){
+    public function __construct($db){
         $this->conn = $db;
     }
 
@@ -18,9 +18,9 @@ class User{
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bind_param(":name",$data->name);
-        $stmt->bind_param(":email",$data->email);
-        $stmt->bind_param(":mobile",$data->mobile);
+        $stmt->bindParam(":name",$data->name);
+        $stmt->bindParam(":email",$data->email);
+        $stmt->bindParam(":mobile",$data->mobile);
 
         if($stmt->execute()){
             return true;
