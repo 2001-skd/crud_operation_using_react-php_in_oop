@@ -19,6 +19,7 @@ $data = json_decode(file_get_contents("php://input",true));
 
 
 switch($request_method){
+    // post method starts
     case 'POST':
         if($user->createUser($data)){
             echo json_encode(['status'=>1,'message'=>"Record created Successfully"]);
@@ -28,14 +29,50 @@ switch($request_method){
 }
 
     break;
+    // post method ends
 
+    
+
+
+    // get method starts
     case "GET":
         $users = $user->readUser();
         echo json_encode($users);
         break;
+    // get method ends
 
+
+    // put method starts
+    case "PUT":
+    parse_str(file_get_contents("php://input"), $put_vars);
+    
+    
+    $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+    
+    $name = isset($put_vars['name']) ? $put_vars['name'] : null;
+    $email = isset($put_vars['email']) ? $put_vars['email'] : null;
+    $mobile = isset($put_vars['mobile']) ? $put_vars['mobile'] : null;
+
+    
+    if ($id && $name && $email && $mobile) {
+        
+        if ($user->updateUser($id, $name, $email, $mobile)) {
+            echo json_encode(['status' => 1, 'message' => "Record Updated Successfully"]);
+        } else {
+            echo json_encode(['status' => 0, 'message' => "Error While Updating Record"]);
+        }
+    } else {
+        echo json_encode(['status' => 0, 'message' => "Invalid data provided"]);
+    }
+    break;
+
+    // put method ends
+
+    // delete method starts
     case "DELETE":
-       $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) :0;
+       $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+       
         if($id && $user->deleteUser( $id )){
             echo json_encode(["status"=> 1,"message"=> "Record Deleted Successfully"]);
         }
@@ -43,6 +80,10 @@ switch($request_method){
             echo json_encode(["status"=> 0,"message"=> "Something Went Wrong While Deleting Record, Please Try Again Later"]);
         }
         break;
+    // delete method ends
+
+
+        
 
 }
 

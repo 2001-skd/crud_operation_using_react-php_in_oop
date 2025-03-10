@@ -38,11 +38,30 @@ class User{
     }
     // read user function ends
 
+    // update user function starts
+    public function updateUser($id){
+        $query = "UPDATE ".$this->table." SET name=:name, email=:email, mobile=:mobile WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":name",$id->name);
+        $stmt->bindParam(":email",$id->email);
+        $stmt->bindParam(":mobile",$id->mobile);
+        $stmt->bindParam(":id",$id, PDO::PARAM_INT);
+
+        if($stmt->execute()){
+            return true;
+        }
+        return false;
+
+    }
+    // update user function ends
+
     // delete user function starts
     public function deleteUser($id){
+        echo $id;
         $query = "DELETE FROM ".$this->table." WHERE id = :id";
         $stmt=$this->conn->prepare($query);
-        $stmt->bindParam(":id",$id);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
         return true;
