@@ -33,7 +33,8 @@ class User{
     public function readUser(){
         $query = "SELECT * FROM ".$this->table;
         $stmt = $this->conn->prepare($query);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     // read user function ends
 }
