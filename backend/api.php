@@ -1,11 +1,17 @@
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 require_once 'DataBase.php';
 require_once 'Users.php';
 include 'cors.php';
 
 $db = new Database();
 $database = $db->dbConnect();
-var_dump($database);
+// var_dump($database);
 
 $user = new User($database);
 $request_method = $_SERVER['REQUEST_METHOD'];
@@ -20,6 +26,23 @@ switch($request_method){
         else{
     echo json_encode(['status'=>0,'message'=>"Something Went Wrong While Creating New User, Please Try Again Later"]);
 }
+
+    break;
+
+    case "GET":
+        $users = $user->readUser();
+        echo json_encode($users);
+        break;
+
+    case "DELETE":
+       $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) :0;
+        if($id && $user->deleteUser( $id )){
+            echo json_encode(["status"=> 1,"message"=> "Record Deleted Successfully"]);
+        }
+        else{
+            echo json_encode(["status"=> 0,"message"=> "Something Went Wrong While Deleting Record, Please Try Again Later"]);
+        }
+        break;
 
 }
 
