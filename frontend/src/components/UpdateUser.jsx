@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { fetchFormDetails, updateUser } from "../services/api";
 import { showFailureToast, showSuccessToast } from "../utils/ToastComponent";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const UpdateUser = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   console.log("User ID:", id);
 
@@ -26,7 +27,12 @@ const UpdateUser = () => {
     try {
       const response = await updateUser(user);
       console.log("API Response:", response);
-      showSuccessToast("Record Updated Successfully");
+      // showSuccessToast("Record Updated Successfully");
+      navigate("/", {
+        state: {
+          successMessage: showSuccessToast("Record Created Successfully"),
+        },
+      });
     } catch (err) {
       console.error("Error while updating user", err);
       showFailureToast("Something Went Wrong While Updating Record");

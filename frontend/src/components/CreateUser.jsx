@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { createUser } from "../services/api";
 import { showFailureToast, showSuccessToast } from "../utils/ToastComponent";
+import { useNavigate } from "react-router";
 
 const CreateUser = () => {
   const [user, setUser] = useState({
@@ -8,6 +9,7 @@ const CreateUser = () => {
     email: "",
     mobile: "",
   });
+  const navigate = useNavigate();
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -19,7 +21,12 @@ const CreateUser = () => {
     try {
       const response = await createUser(user);
       console.log("response", response);
-      showSuccessToast("Record Created Successfully");
+      // showSuccessToast("Record Created Successfully");
+      navigate("/", {
+        state: {
+          successMessage: showSuccessToast("Record Created Successfully"),
+        },
+      });
     } catch (err) {
       console.log("error while creating user", err);
       showFailureToast("Something Went While Creating Record");
