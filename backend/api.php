@@ -52,28 +52,14 @@ switch($request_method){
 
     // put method starts
     case "PUT":
-    parse_str(file_get_contents("php://input"), $put_vars);
-    
-    
-    $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-
-    
-    $name = isset($put_vars['name']) ? $put_vars['name'] : null;
-    $email = isset($put_vars['email']) ? $put_vars['email'] : null;
-    $mobile = isset($put_vars['mobile']) ? $put_vars['mobile'] : null;
-
-    
-    if ($id && $name && $email && $mobile) {
-        
-        if ($user->updateUser($id, $name, $email, $mobile)) {
-            echo json_encode(['status' => 1, 'message' => "Record Updated Successfully"]);
-        } else {
-            echo json_encode(['status' => 0, 'message' => "Error While Updating Record"]);
+        $id = isset($_GET['id']) ? $_GET['id'] :'';
+        if($id && $user->updateUser($id)){
+            echo json_encode(['status'=> 1,'message'=> 'Record Updated Successfully']);
         }
-    } else {
-        echo json_encode(['status' => 0, 'message' => "Invalid data provided"]);
-    }
-    break;
+        else{
+            echo json_encode(['status'=> 0,'message'=> 'Something Went Wrong While Updating Record']);
+        }
+        break;
 
     // put method ends
 

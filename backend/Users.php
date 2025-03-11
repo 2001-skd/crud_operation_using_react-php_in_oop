@@ -40,25 +40,32 @@ class User{
 
     // update user function starts
     public function updateUser($id){
-        $query = "UPDATE ".$this->table." SET name=:name, email=:email, mobile=:mobile WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
+    // echo $id;
+    $userInput = json_decode(file_get_contents('php://input'));
+    
+    // Corrected SQL query with the 'SET' keyword
+    $query = "UPDATE " . $this->table . " SET name=:name, email=:email, mobile=:mobile WHERE id=:id";
+    $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(":name",$id->name);
-        $stmt->bindParam(":email",$id->email);
-        $stmt->bindParam(":mobile",$id->mobile);
-        $stmt->bindParam(":id",$id, PDO::PARAM_INT);
+    // Bind parameters
+    $stmt->bindParam(":id", $userInput->id, PDO::PARAM_INT);
+    $stmt->bindParam(":name", $userInput->name);
+    $stmt->bindParam(":email", $userInput->email);
+    $stmt->bindParam(":mobile", $userInput->mobile);
 
-        if($stmt->execute()){
-            return true;
-        }
+    // Execute the statement
+    if($stmt->execute()){
+        return true;
+    } else {
         return false;
-
     }
+}
+
     // update user function ends
 
     // delete user function starts
     public function deleteUser($id){
-        echo $id;
+        // echo $id;
         $query = "DELETE FROM ".$this->table." WHERE id = :id";
         $stmt=$this->conn->prepare($query);
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);

@@ -26,11 +26,7 @@ const UpdateUser = () => {
     try {
       const response = await updateUser(user);
       console.log("API Response:", response);
-      if (response.success) {
-        showSuccessToast("Record Updated Successfully");
-      } else {
-        showFailureToast("Failed to update record");
-      }
+      showSuccessToast("Record Updated Successfully");
     } catch (err) {
       console.error("Error while updating user", err);
       showFailureToast("Something Went Wrong While Updating Record");
